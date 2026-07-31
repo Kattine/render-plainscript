@@ -5,7 +5,7 @@ from fastapi.responses import HTMLResponse, JSONResponse
 import asyncio
 
 HF_TOKEN = os.environ.get("HF_TOKEN")
-API_URL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3/v1/chat/completions"
+API_URL = "https://router.huggingface.co/hf-inference/models/mistralai/Mistral-7B-Instruct-v0.3/v1/chat/completions"
 
 SYSTEM_PROMPT = (
     "You are a medical text simplifier. Rewrite the following medical text "
