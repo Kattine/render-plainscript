@@ -5,7 +5,7 @@ from fastapi.responses import HTMLResponse, JSONResponse
 import asyncio
 
 HF_TOKEN = os.environ.get("HF_TOKEN")
-API_URL = "https://router.huggingface.co/hf-inference/models/mistralai/Mistral-7B-Instruct-v0.3/v1/chat/completions"
+API_URL = "https://router.huggingface.co/v1/chat/completions"
 
 SYSTEM_PROMPT = (
     "You are a medical text simplifier. Rewrite the following medical text "
@@ -24,13 +24,13 @@ async def call_hf(text: str, system: str) -> str:
                 "Content-Type": "application/json",
             },
             json={
+                "model": "mistralai/Mistral-7B-Instruct-v0.3:auto",  # :auto 自动选provider
                 "messages": [
                     {"role": "system", "content": system},
                     {"role": "user", "content": text},
                 ],
                 "max_tokens": 400,
                 "temperature": 0.7,
-                "stream": False,
             }
         )
         res.raise_for_status()
