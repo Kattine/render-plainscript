@@ -18,21 +18,24 @@ app = FastAPI()
 
 async def call_hf(text: str, system: str) -> str:
     async with httpx.AsyncClient(timeout=60) as client:
-        res = await client.post(API_URL, 
-            headers={"Authorization": f"Bearer {HF_TOKEN}"},
+        res = await client.post(API_URL,
+            headers={
+                "Authorization": f"Bearer {HF_TOKEN}",
+                "Content-Type": "application/json",
+            },
             json={
-                "model": "mistralai/Mistral-7B-Instruct-v0.3",
                 "messages": [
                     {"role": "system", "content": system},
                     {"role": "user", "content": text},
                 ],
                 "max_tokens": 400,
                 "temperature": 0.7,
+                "stream": False,
             }
         )
         res.raise_for_status()
         return res.json()["choices"][0]["message"]["content"].strip()
-
+        
 @app.post("/rewrite")
 async def rewrite(request: Request):
     body = await request.json()
